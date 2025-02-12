@@ -38,10 +38,16 @@
             </div>
         </div>
     </div>
+    <!-- when post_list has more objects then paginate_by, is_paginated is set to True -->
     {% if is_paginated %}
     <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
+            <!-- if the page_obj has less or equal objects to paginate_by, then will be set to False -->
+            {% if page_obj.has_previous %}
+            <li><a href="?page={{ page_obj.previous_page_number }}" class="page-link"> &laquo; PREV</a></li>
+            {% endif %}
             {% if page_obj.has_next %}
+            <!-- ListView handles the pagination -->
             <li><a href="?page={{ page_obj.next_page_number }}" class="page-link"> NEXT &raquo;</a></li>
             {% endif %}
         </ul>
