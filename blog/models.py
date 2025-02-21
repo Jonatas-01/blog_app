@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from cloudinary.models import CloudinaryField
 
 STATUS = ((0, "Draft"), (1, "Published"))
 
@@ -15,6 +16,7 @@ class Post(models.Model):
         # relatade_name, it gives a meaningful name to the relation from the User model to the Post
         User, on_delete=models.CASCADE, related_name="blog_posts"
     )
+    featured_image = CloudinaryField('image', default='placeholder')
     content = models.TextField()
     # auto_now_add=True means the default created time is the time of post entry
     created_on = models.DateTimeField(auto_now_add=True)

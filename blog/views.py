@@ -30,6 +30,7 @@ def post_detail(request, slug_url):  # slug is a url parameter
     """
     queryset = Post.objects.filter(status=1)
     # first slug is a data set in post database, and we are setting the value of the parameter passed
+    # we do it to get the specif post
     post = get_object_or_404(queryset, slug=slug_url)
     # it will return all comments related to the selected post by using related_name="comments"
     comments = post.comments.all().order_by("-created_on")
@@ -72,6 +73,7 @@ def comment_edit(request, slug, comment_id):
         queryset = Post.objects.filter(status=1)
         post = get_object_or_404(queryset, slug=slug)
         comment = get_object_or_404(Comment, pk=comment_id)
+        # By specifying instance=comment, any changes made to the form will be applied to the existing Comment, instead of creating a new one.
         comment_form = CommentForm(data=request.POST, instance=comment)
 
         if comment_form.is_valid() and comment.author == request.user:
@@ -85,6 +87,8 @@ def comment_edit(request, slug, comment_id):
                                  'Error updating comment!')
 
     return HttpResponseRedirect(reverse('post_detail', args=[slug]))
+# HttpResponseRedirect is a Django class that tells the browser to go to a different URL.
+# reverse is a Django function that constructs a URL from the provided URL path name and any relevant URL arguments: args=[slug]. Using slug it ensures to back to the old post
 
 
 def comment_delete(request, slug, comment_id):
